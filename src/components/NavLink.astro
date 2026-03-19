@@ -1,0 +1,9 @@
+---
+const {isActive, ...props} = Astro.props;
+---
+<a 
+    class={`inline-block md:block lg:inline-block m-3 p-2 rounded hover:text-zinc-100 ${isActive ? 'border' : ''}`}
+    {...props}
+>
+    <slot/>
+</a>

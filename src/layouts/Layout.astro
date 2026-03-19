@@ -1,23 +1,60 @@
+---
+import '@/styles/global.css'
+import NavLink from '@/components/NavLink.astro';
+
+const { pathname } = Astro.url;
+const { title = 'Welcome' } = Astro.props;
+---
 <!doctype html>
-<html lang="en">
+<html lang="en" class="bg-zinc-50 text-zinc-600">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
 	</head>
 	<body>
-		<slot />
+		<header class="site-header md:fixed w-full md:w-[35%] md:h-full flex flex-col items-center lg:items-end p-4 md:py-20 md:px-6 lg:py-30 lg:px-10 xl:py-40 xl:px-20 text-center lg:text-right text-zinc-300">
+			<a href="/"><img src="/avatar.jpg" alt="Avatar Photo" width="150" class="rounded-full" /></a>
+			<h1 class="text-[inherit] text-2xl lg:text-5xl my-4 lg:mb-8">I'm Carson</h1>
+			<p class="lg:ml-12">I do web stuff and things, and also photography</p>
+			<nav class="mt-5 md:mt-10 py-5">
+				<NavLink href="/" isActive={pathname === '/'}>Home</NavLink>
+				<NavLink href="/blog" isActive={pathname.startsWith('/blog')}>Blog</NavLink>
+				<NavLink href="/contact" isActive={pathname === '/contact'}>Contact</NavLink>
+			</nav>
+			<footer class="hidden md:block mt-auto">
+				&copy; Carson Evans
+			</footer>
+		</header>
+		<main class="md:ml-[35%] md:w-[65%] max-w-4xl py-10 xl:py-40 md:py-20 lg:py-30 px-5 md:px-10 lg:px-20">
+			<slot />
+		</main>
+		<footer class="bottom-footer mt-auto px-4 py-12 md:hidden text-center text-zinc-300">
+			&copy; Carson Evans
+		</footer>
 	</body>
 </html>
-
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+.site-header {
+	background-position: 0;
+    background-attachment: scroll;
+    background-image: linear-gradient(rgba(0, 0, 0, .6), rgba(0, 0, 0, .6)), url(/bg.jpg);
+    background-repeat: repeat, no-repeat;
+	background-size: auto, cover;
+}
+
+.bottom-footer {
+	background-position: 0;
+    background-attachment: scroll;
+    background-image: linear-gradient(rgba(0, 0, 0, .6), rgba(0, 0, 0, .6)), url(/bg.jpg);
+    background-repeat: repeat, no-repeat;
+    background-size: auto, cover;
+
+	/* position: absolute;
+    bottom: 0;
+    width: 100%; */
+}
 </style>
