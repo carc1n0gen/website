@@ -1,9 +1,10 @@
 ---
-const {isActive, ...props} = Astro.props;
+const { isActive, ...props } = Astro.props;
 ---
-<a 
-    class={`inline-block md:block lg:inline-block m-3 p-2 rounded hover:text-zinc-100 ${isActive ? 'border' : ''}`}
-    {...props}
+
+<a
+  class={`inline-block md:block lg:inline-block m-3 md:pr-2 lg:pr-0 md:border-r-3 md:border-r-transparent lg:border-r-0 hover:text-zinc-100 ${isActive ? "border-b-3 md:border-b-0 md:border-r-zinc-200 md:border-r-3 lg:border-r-0 lg:border-b-3" : ""}`}
+  {...props}
 >
-    <slot/>
+  <slot />
 </a>
