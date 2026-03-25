@@ -4,7 +4,7 @@ on:
   # Trigger the workflow every time you push to the `main` branch
   # Using a different branch name? Replace `main` with your branch’s name
   push:
-    branches: [ main ]
+    branches: [main]
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 
@@ -23,17 +23,16 @@ jobs:
       - name: Install, build, and upload your site
         uses: withastro/action@v5
         # with:
-          # path: . # The root location of your Astro project inside the repository. (optional)
-          # node-version: 24 # The specific version of Node that should be used to build your site. Defaults to 22. (optional)
-          # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
-          # build-cmd: pnpm run build # The command to run to build your site. Runs the package build script/task by default. (optional)
+        # path: . # The root location of your Astro project inside the repository. (optional)
+        # node-version: 24 # The specific version of Node that should be used to build your site. Defaults to 22. (optional)
+        # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
+        # build-cmd: pnpm run build # The command to run to build your site. Runs the package build script/task by default. (optional)
         env:
           # PUBLIC_POKEAPI: 'https://pokeapi.co/api/v2' # Use single quotation marks for the variable value. (optional)
           PUBLIC_SITE_URL: https://carc1n0gen.github.io
-          DISQUS_SHORTNAME: carsons-test-blog
-          FORM_SPREES_ID: xknpaozl
-          RECAPTCHA_SITE_KEY: 6Lc1NcYZAAAAAPNz7pCk3XBOxU4Pkd05SnrpOhOg
-
+          PUBLIC_DISQUS_SHORTNAME: carsons-test-blog
+          PUBLIC_FORM_SPREES_ID: xknpaozl
+          PUBLIC_RECAPTCHA_SITE_KEY: 6Lc1NcYZAAAAAPNz7pCk3XBOxU4Pkd05SnrpOhOg
 
   deploy:
     needs: build
