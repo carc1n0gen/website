@@ -31,7 +31,7 @@ export function blogLoader(options) {
               .replace(/-/g, " ")
               .replace(/\b\w/g, (c) => c.toUpperCase()),
             date: dateStr,
-            url: `/blog/${year}/${month}/${day}/${slug}`,
+            url: `/${year}/${month}/${day}/${slug}`,
             ...(mtime ? { updated: mtime } : {}),
             ...data,
           };
