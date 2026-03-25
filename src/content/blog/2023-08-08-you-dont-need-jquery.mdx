@@ -1,0 +1,145 @@
+---
+title: You Don't Need jQuery
+description: Even though modern JavaScript has rendered the need for a library such as jQuery unnecessary, I STILL see people (especially those who are very new to web development) using it for brand new projects. So I thought I would write a little post about how to do some of the most common jQuery things in lovely plain simple JavaScript.
+keywords: modern javascript, jquery, stop using jquery, querySelector
+tags:
+  - rant
+  - javascript
+---
+
+<p>{frontmatter.description}</p>
+
+Before I get in to it, I do want to acknowledge that I know the main reason new
+web developers start using jQuery is due to the sheer amount of examples all
+over the web that demonstrate how to perform DOM manipulation using it. My goal
+with this post is to be one tiny little push away from that 😊.
+
+## Element Selecting
+
+One common thing people do with jQuery is select, or "query" the DOM to find an
+element or many elements.
+
+```js
+// ======
+// jQuery
+// ======
+const element = $(".myClass");
+
+// ========
+// plain js
+// ========
+const element = document.querySelector(".myClass"); // get single matching element
+const elements = document.querySelectorAll(".myClass"); // get all matching elements
+```
+
+Now if all you are used to is jQuery, then those functions might seem quite
+verbose. It is, but you get used to it, or you can alias it.
+
+```js
+// ========
+// plain js
+// ========
+const qs = document.querySelector;
+const qsa = document.querySelectorAll;
+
+const element = qs(".myClass"); // get single matching element
+const elements = qsa(".myClass"); // get all matching elements
+```
+
+## Event Handlers
+
+Another common use for jQuery is to quickly add event handlers to buttons, forms
+or other elements.
+
+```js
+// ======
+// jQuery
+// ======
+$("#myButton").click(() => {
+  alert("I've been clicked!");
+});
+
+$("#myForm").submit(() => {
+  alert("I've been submitted!");
+});
+
+// ========
+// plain js
+// ========
+document.querySelector("#myButton").addEventListener("click", () => {
+  alert("I've been clicked!");
+});
+
+document.querySelector("#myForm").addEventListener("submit", () => {
+  alert("I've been submitted!");
+});
+```
+
+or if you use the alias shown previously:
+
+```js
+// ========
+// plain js
+// ========
+const qs = document.querySelector;
+qs("#myButton").addEventListener("click", () => {
+  alert("I've been clicked!");
+});
+
+qs("#myForm").addEventListener("submit", () => {
+  alert("I've been submitted!");
+});
+```
+
+## Ajax calls
+
+Now this is probably the #1 most common thing I see people using jQuery for. I
+have even seen people include jQuery in their app for the _soul_ purpose of
+performing Ajax requests. This is because the old `XMLHttpRequest` was not at
+all intuitive to use, but modern JavaScript has a new api. Fetch to the rescue!
+
+```js
+// ======
+// jQuery
+// ======
+$.ajax({
+  method: "POST",
+  url: "/some/endpoint",
+  dataType: "json",
+  data: { foo: "bar" },
+})
+  .then((data) => {
+    // handle success
+  })
+  .catch((err) => {
+    // handle error
+  });
+
+// ========
+// plain js
+// ========
+fetch("/some/endpoint", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ foo: "bar" }),
+})
+  .then((response) => {
+    if (response.ok) {
+      // handle success
+    }
+  })
+  .catch((err) => {
+    // handle error
+  });
+```
+
+Again, this is slightly more verbose in some ways, but I have always felt it is
+better to be just a bit more verbose than include an entire library to do such
+basic things.
+
+This isn't an exhaustive list of everything one can do in plain JS instead of
+jQuery by any means. I just wanted to write a quick post demonstrating _some_
+of the basic things to get the point across. Please please please take the time
+to learn the lovely modern features of JavaScript!

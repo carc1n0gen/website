@@ -2,6 +2,7 @@ import { stat } from "fs/promises";
 import { fileURLToPath } from "url";
 
 import { glob } from "astro/loaders";
+import { date } from "astro:schema";
 
 export function blogLoader(options) {
   const inner = glob(options);

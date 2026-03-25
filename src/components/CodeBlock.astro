@@ -1,0 +1,7 @@
+---
+const { class: className, ...props } = Astro.props;
+---
+
+<pre class={`my-4 p-4 rounded ${className}`} {...props}>
+<slot />
+</pre>

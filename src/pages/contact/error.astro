@@ -1,0 +1,12 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Button from '@/components/Button.astro';
+---
+
+<Layout title="Error">
+  <h1 class="text-3xl font-bold mb-4">Whoops!</h1>
+  <p>Something went wrong. Please try again later.</p>
+  <div class="flex">
+    <Button as="a" href="/contact" class="mt-4">Go Back</Button>
+  </div>
+</Layout>

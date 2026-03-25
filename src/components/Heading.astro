@@ -1,0 +1,27 @@
+---
+const { as: Component, id, ...props } = Astro.props;
+
+let size;
+switch (Component) {
+  case "h1":
+    size = "text-3xl";
+    break;
+  case "h2":
+    size = "text-2xl";
+    break;
+  case "h3":
+    size = "text-xl";
+    break;
+  default:
+    size = "text-lg";
+}
+---
+
+<a href={`#${id}`}>
+  <Component
+    id={id}
+    class={`${size} inline-block font-bold mt-6 mb-1 hover:after:content-['#'] target:bg-yellow-200 target:px-2 scroll-mt-5`}
+  >
+    <slot />
+  </Component>
+</a>

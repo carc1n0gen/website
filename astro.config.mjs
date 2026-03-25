@@ -1,11 +1,29 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 
-import tailwindcss from '@tailwindcss/vite';
+import oklabFunction from "@csstools/postcss-oklab-function";
+import tailwindcss from "@tailwindcss/vite";
+import icon from "astro-icon";
+
+import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
 export default defineConfig({
   vite: {
-    plugins: [tailwindcss()]
-  }
+    plugins: [tailwindcss()],
+    css: {
+      postcss: {
+        // fixes incompatibility between tailwind color values and disqus's color parsing
+        plugins: [oklabFunction()],
+      },
+    },
+  },
+
+  markdown: {
+    shikiConfig: {
+      theme: "everforest-dark",
+    },
+  },
+
+  integrations: [icon(), mdx()],
 });

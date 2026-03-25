@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+
+import Layout from "@/layouts/Layout.astro";
+
+const posts = (await getCollection("blog")).sort((a, b) => {
+  return b.data.date.valueOf() - a.data.date.valueOf();
+});
+
+const groups = {};
+posts.forEach((post) => {
+  const year = post.data.date.getUTCFullYear();
+  if (!groups[year]) {
+    groups[year] = [];
+  }
+
+  groups[year].push(post);
+});
+---
+
+<Layout title="Carson's Blog">
+  {
+    Object.keys(groups)
+      .reverse()
+      .map((group) => (
+        <section class="mb-16 last:mb-0">
+          <h2 class="text-3xl font-bold">{group}</h2>
+          <ul class="list-disc list-inside pl-4">
+            {groups[group].map((post) => (
+              <li class="my-2 last:mb-0">
+                <a href={post.data.url} class="">
+                  {post.data.title}
+                </a>
+                <span class="ml-2 text-sm text-zinc-400">
+                  {post.data.date.toLocaleString("default", {
+                    month: "long",
+                    day: "numeric",
+                    timeZone: "UTC",
+                  })}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+  }
+</Layout>

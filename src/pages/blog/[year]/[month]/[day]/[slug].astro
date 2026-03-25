@@ -1,7 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
+
 import Layout from "@/layouts/Layout.astro";
 import Article from "@/components/Article.astro";
+import { DISQUS_SHORTNAME } from "@/constants";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -20,3 +22,22 @@ const { post } = Astro.props;
 <Layout {...post.data}>
   <Article {post} />
 </Layout>
+<script define:vars={{ DISQUS_SHORTNAME }}>
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function () {
+    // DON'T EDIT BELOW THIS LINE
+    var d = document,
+      s = d.createElement("script");
+    s.src = `https://${DISQUS_SHORTNAME}.disqus.com/embed.js`;
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>

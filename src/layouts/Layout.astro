@@ -1,16 +1,31 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
+import { ClientRouter } from "astro:transitions";
+import { Icon } from "astro-icon/components";
 
 import "@/styles/global.css";
 import NavLink from "@/components/NavLink.astro";
 import avatar from "@/assets/avatar.jpg";
+import bg from "@/assets/bg.jpg";
+import {
+  SITE_TITLE,
+  SITE_SUBTITLE,
+  GITHUB_URL,
+  INSTAGRAM_URL,
+  GA_TRACKING_ID,
+} from "@/constants";
 
+const { title = "Welcome", description = "", keywords = "" } = Astro.props;
 const { pathname } = Astro.url;
-const { title = "Welcome" } = Astro.props;
+const optimizedBg = await getImage({ src: bg, format: "avif", quality: "low" });
 ---
 
 <!doctype html>
-<html lang="en" class="bg-zinc-50 text-zinc-600 h-full">
+<html
+  transition:animate="none"
+  lang="en"
+  class="bg-zinc-50 text-zinc-600 h-full scroll-smooth"
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -25,6 +40,9 @@ const { title = "Welcome" } = Astro.props;
     />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <ClientRouter />
   </head>
   <body class="flex flex-col h-full">
     <header
@@ -33,15 +51,18 @@ const { title = "Welcome" } = Astro.props;
       <a href="/">
         <Image
           src={avatar}
+          format="avif"
+          quality="medium"
           alt="Avatar"
-          width={150}
           decoding="async"
           loading="eager"
-          class="rounded-full"
+          class="avatar rounded-full w-[150px]"
         />
       </a>
-      <h1 class="text-inherit text-2xl lg:text-5xl my-4 lg:mb-8">I'm Carson</h1>
-      <p class="lg:ml-12">I do web stuff and things, and also photography</p>
+      <h1 class="text-inherit text-2xl lg:text-5xl my-4 lg:mb-8">
+        {SITE_TITLE}
+      </h1>
+      <p class="lg:ml-12">{SITE_SUBTITLE}</p>
       <nav class="mt-5 md:mt-10 py-5 text-right">
         <NavLink href="/" isActive={pathname === "/"}>Home</NavLink>
         <NavLink href="/blog" isActive={pathname.startsWith("/blog")}
@@ -51,9 +72,38 @@ const { title = "Welcome" } = Astro.props;
           >Contact</NavLink
         >
       </nav>
-      <footer class="hidden md:block mt-auto">&copy; Carson Evans</footer>
+      <footer class="hidden md:flex md:flex-col lg:flex-row mt-auto">
+        <span class="md:mb-4 lg:mb-0">&copy; Carson Evans</span>
+        <span>
+          <a href={GITHUB_URL} class="md:ml-0 lg:ml-4">
+            <Icon
+              title="Github"
+              name="fa7-brands:github"
+              size="1.5rem"
+              class="inline"
+            />
+          </a>
+          <a href={INSTAGRAM_URL} class="ml-4">
+            <Icon
+              title="Instagram"
+              name="fa7-brands:instagram"
+              size="1.5rem"
+              class="inline"
+            />
+          </a>
+          <a href="/feed.xml" class="ml-4">
+            <Icon
+              title="RSS"
+              name="fa7-solid:rss"
+              size="1.5rem"
+              class="inline"
+            />
+          </a>
+        </span>
+      </footer>
     </header>
     <main
+      transition:animate="fade"
       class="md:ml-[30%] lg:ml-[35%] md:w-[70%] lg:w-[65%] max-w-4xl py-10 xl:py-40 md:py-20 lg:py-30 px-5 md:px-10 lg:px-20"
     >
       <slot />
@@ -61,16 +111,36 @@ const { title = "Welcome" } = Astro.props;
     <footer
       class="bottom-footer mt-auto px-4 py-12 md:hidden text-center text-zinc-300"
     >
-      &copy; Carson Evans
+      <a href={GITHUB_URL} class="ml-4">
+        <Icon
+          title="Github"
+          name="fa7-brands:github"
+          size="2rem"
+          class="inline"
+        />
+      </a>
+      <a href={INSTAGRAM_URL} class="ml-4">
+        <Icon
+          title="Instagram"
+          name="fa7-brands:instagram"
+          size="2rem"
+          class="inline"
+        />
+      </a>
+      <a href="/feed.xml" class="ml-4">
+        <Icon title="RSS" name="fa7-solid:rss" size="2rem" class="inline" />
+      </a>
+      <div class="mt-4">&copy; Carson Evans</div>
     </footer>
+    <div id="background" data-src={optimizedBg.src}></div>
   </body>
 </html>
-<style>
+<style define:vars={{ bgUri: `url(${optimizedBg.src})` }}>
   .site-header {
     background-position: 0;
     background-attachment: scroll;
     background-image:
-      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/bg.jpg");
+      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), var(--bgUri);
     background-repeat: repeat, no-repeat;
     background-size: auto, cover;
   }
@@ -79,8 +149,20 @@ const { title = "Welcome" } = Astro.props;
     background-position: 0;
     background-attachment: scroll;
     background-image:
-      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/bg.jpg");
+      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), var(--bgUri);
     background-repeat: repeat, no-repeat;
     background-size: auto, cover;
   }
 </style>
+<script
+  async
+  src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+></script>
+<script define:vars={{ GA_TRACKING_ID }}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", GA_TRACKING_ID);
+</script>

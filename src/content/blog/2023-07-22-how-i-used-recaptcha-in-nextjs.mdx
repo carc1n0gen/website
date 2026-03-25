@@ -1,0 +1,190 @@
+---
+title: How I Used Google reCaptcha In NextJS
+description: I recently migrated this website to NextJS and I ran in to a few hurdles along the way. Google reCaptcha gave me a few of those hurdles, and in this post I will explain how I overcame them.
+keywords: google recaptcha, nextjs, react, nodejs, javascript
+tags:
+  - nextjs
+  - react
+---
+
+<p>{frontmatter.description}</p>
+
+Also on a side note: gosh it's been ages since I bothered to touch this site,
+let alone write a new post. Migrating to NextJS was a nice exercise in learning
+the framework, and a way to bring enthusiasm about it back. I hope to keep it up
+and keep posting.
+
+## So What Were Those Hurdles?
+
+One of those hurdles was how NextJS (or maybe React in general?) deal with the
+virtual DOM and changes made from outside scripts. Next will raise am error if
+elements appear in the DOM that it was not expecting. Another issue I ran in to
+was related to dark/light mode. When I migrated to NextJS, I decided I would
+also implement a dark mode. When you initialize google reCaptcha, you can pass
+a theme option, but this is only set once and is probably not meant to change.
+
+## The Virtual DOM Hurdle
+
+So in a plain html/js web page, you use google reCaptcha something like this:
+
+```html
+<html>
+  <head>
+    <title>reCAPTCHA demo: Simple page</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  </head>
+  <body>
+    <form action="?" method="POST">
+      <div class="g-recaptcha" data-sitekey="your_site_key"></div>
+      <br />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
+```
+
+What happens here is once the reCaptcha script is loaded, it looks for an
+element with the class `g-recaptcha` and injects additional things within it.
+This causes unexpected nodes to be detected by NextJS and an error is thrown.
+Luckily there is a package that wraps this functionality in a React component to
+avoid this sort of error. The package is called [react-google-recaptcha](https://www.npmjs.com/package/react-google-recaptcha)
+and is used something like this:
+
+```js
+import ReCAPTCHA from "react-google-recaptcha";
+
+export default function MyForm() {
+  return (
+    <form action="?" method="POST">
+      <ReCAPTCHA sitekey="your_site_key" />
+      <br />
+      <input type="submit" value="Submit" />
+    </form>
+  );
+}
+```
+
+With this, the reCaptcha is loaded, and now works just like before!
+
+## The Dynamically Changing Theme Hurdle
+
+I wanted the reCaptcha to automatically change between dark and light based on
+the system settings of the user. There are media queries in CSS for changing the
+look based on this preference, but how the heck does one detect this preference
+with JavaScript? Well I found a fancy function called `matchMedia` which is used
+for detecting if anything matches a CSS selector. On top of this, we can use
+an event listener to detect if weather the selector matches ever change like so:
+
+```js
+matchMedia("(prefers-color-scheme: dark)").addEventListener(
+  "change",
+  (event) => {
+    if (e.target.matches) {
+      // Changed to dark mode
+    } else {
+      // Changed to light mode
+    }
+  },
+);
+```
+
+The `ReCAPTCHA` component accepts a `theme` prop for choosing weather the
+captcha should look dark or light. I tried using a state variable in combination
+with a useEffect hook and the above event handler to update the theme whenever
+the system theme changes like this:
+
+```js
+export default function MyForm() {
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    // You can use matchMedia to detect if dark mode is enabled
+    const { matches } = matchMedia("(prefers-color-scheme: dark)");
+    setTheme(matches ? "dark" : "light");
+
+    // You can also use matchMedia to detect if light/dark mode has changed
+    const handler = matchMedia("(prefers-color-scheme: dark)").addEventListener(
+      "change",
+      (e) => {
+        if (e.target.matches) {
+          setTheme("dark");
+        } else {
+          setTheme("light");
+        }
+      },
+    );
+
+    // use the cleanup function to remove the event listener.
+    return function cleanup() {
+      matchMedia("(prefers-color-scheme: dark)").removeEventListener(
+        "change",
+        handler,
+      );
+    };
+  }, []);
+
+  return (
+    <form action="?" method="">
+      <ReCAPTCHA sitekey="your_site_key" theme={theme} />
+      <br />
+      <input type="submit" value="Submit" />
+    </form>
+  );
+}
+```
+
+But this will not update the reCaptcha theme since it is meant to be initialized
+just once and then stay in that state. However react has a way to force a
+component to re-mount, which will re-run all the stuff that happens within the
+component. All components can be passed a `key` prop. If this key ever changes,
+then the component it is passed to will re-mount. So I can use an additional
+state variable for this key, and modify its value every time our theme change
+handler is run:
+
+```js
+export default function MyForm() {
+  const [key, setKey] = useState(0); // Our new key state variable
+  const [theme, setTheme] = useState("dark");
+
+  useEffect(() => {
+    const { matches } = matchMedia("(prefers-color-scheme: dark)");
+    setTheme(matches ? "dark" : "light");
+
+    const handler = matchMedia("(prefers-color-scheme: dark)").addEventListener(
+      "change",
+      (e) => {
+        if (e.target.matches) {
+          setTheme("dark");
+        } else {
+          setTheme("light");
+        }
+
+        // update the key's value
+        setKey(key + 1);
+      },
+    );
+
+    return function cleanup() {
+      matchMedia("(prefers-color-scheme: dark)").removeEventListener(
+        "change",
+        handler,
+      );
+    };
+  }, [key]); // Don't forget to add key to the dependency array
+
+  return (
+    <form action="?" method="">
+      <ReCAPTCHA key={key} sitekey="your_site_key" theme={theme} />
+      <br />
+      <input type="submit" value="Submit" />
+    </form>
+  );
+}
+```
+
+Now the reCaptcha theme changes dynamically when the system colour theme
+changes!
+
+This was just one of the many things I ran in to during my adventure of migrating
+my blog to NextJS, and using NextJS to generate a static website. Stay tuned
+for more!

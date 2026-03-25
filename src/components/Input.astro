@@ -1,0 +1,9 @@
+---
+const { as: Component = 'input', type = 'text', ...props } = Astro.props;
+---
+
+<Component
+  type={Component === 'input' ? type : undefined}
+  {...props}
+  class={`block w-full rounded bg-zinc-100 border-zinc-300`}
+ />
