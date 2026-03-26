@@ -16,6 +16,7 @@ const blog = defineCollection({
     date: z.coerce.date(),
     updated: z.coerce.date(),
     url: z.string(),
+    disqus_identifier: z.string(),
   }),
 });
 
