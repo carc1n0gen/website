@@ -2,6 +2,8 @@
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Article from "@/components/Article.astro";
+import Paragraph from "@/components/Paragraph.astro";
+import Button from "@/components/Button.astro";
 
 const posts = (await getCollection("blog"))
   .sort((a, b) => {
@@ -11,7 +13,18 @@ const posts = (await getCollection("blog"))
 ---
 
 <Layout title="Carson's Blog">
-  {posts.map((post) => <Article post={post} isPreview={true} />)}
+  {
+    posts.map((post) => (
+      <Article post={post} isPreview={true}>
+        <>
+          <Paragraph>{post.data.description}</Paragraph>
+          <Button as="a" href={post.data.url}>
+            Read more
+          </Button>
+        </>
+      </Article>
+    ))
+  }
   <div class="mt-20 text-center">
     <a href="/blog/archive" class="font-bold text-2xl underline">
       View all posts

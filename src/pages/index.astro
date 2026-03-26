@@ -1,10 +1,71 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
+import H2 from "@/components/H2.astro";
+import Button from "@/components/Button.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const recentPosts = (await getCollection("blog"))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 ---
 
 <Layout title="Welcome">
-  <p>Hey there!</p>
+  <section class="mb-16">
+    <H2>Hi, I'm Carson</H2>
+    <p class="mb-4">
+      I'm a web developer and photographer based in Canada. I enjoy building
+      things for the web and capturing the world through a lens.
+    </p>
+    <div class="flex gap-4 flex-wrap">
+      <Button as="a" href="/galleries">My Galleries</Button>
+      <Button as="a" href="/blog">My Blog</Button>
+    </div>
+  </section>
+
+  <section class="mb-16">
+    <H2>Recent Photos</H2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
+      {
+        [1, 2, 3, 4, 5, 6].map((i) => (
+          <a href="#">
+            <img
+              src={`https://placehold.co/400x400?text=Photo+${i}`}
+              alt={`Photo ${i}`}
+              class="w-full aspect-square object-cover rounded"
+            />
+          </a>
+        ))
+      }
+    </div>
+    <Button as="a" href="/gallery">View all photos</Button>
+  </section>
+
+  <section class="mb-16">
+    <H2>Recent Posts</H2>
+    <ul class="space-y-4">
+      {
+        recentPosts.map((post) => (
+          <li>
+            <a href={post.data.url} class="font-bold underline">
+              {post.data.title}
+            </a>
+            <p class="text-sm text-zinc-500">
+              {post.data.date.toLocaleString("default", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+                timeZone: "UTC",
+              })}
+            </p>
+            {post.data.description && (
+              <p class="mt-1">{post.data.description}</p>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-6">
+      <Button as="a" href="/blog">More posts</Button>
+    </div>
+  </section>
 </Layout>

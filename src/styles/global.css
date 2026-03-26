@@ -1,2 +1,30 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/forms";
+
+/* @view-transition {
+    navigation: auto;
+}
+
+.site-header {
+    view-transition-name: none;
+}
+
+.site-content {
+    view-transition-name: main-content;
+}
+
+::view-transition-old(main-content) {
+    animation: fade-out 0.2s forwards;
+}
+
+::view-transition-new(main-content) {
+    animation: fade-in 0.2s forwards;
+}
+
+@keyframes fade-out {
+    to { opacity: 0;}
+}
+
+@keyframes fade-in {
+    from { opacity: 0;}
+} */

@@ -31,7 +31,8 @@ export function blogLoader(options) {
               .replace(/-/g, " ")
               .replace(/\b\w/g, (c) => c.toUpperCase()),
             date: dateStr,
-            url: `/${year}/${month}/${day}/${slug}`,
+            url: `/blog/${year}/${month}/${day}/${slug}`,
+            disqus_identifier: `/${year}/${month}/${day}/${slug}`,
             ...(mtime ? { updated: mtime } : {}),
             ...data,
           };

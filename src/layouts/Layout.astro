@@ -91,20 +91,20 @@ const optimizedBg = await getImage({ src: bg, format: "avif", quality: "low" });
               class="inline"
             />
           </a>
-          <a href="/feed.xml" class="ml-4">
+          <!-- <a href="/blog/feed.xml" class="ml-4">
             <Icon
               title="RSS"
               name="fa7-solid:rss"
               size="1.5rem"
               class="inline"
             />
-          </a>
+          </a> -->
         </span>
       </footer>
     </header>
     <main
       transition:animate="fade"
-      class="md:ml-[30%] lg:ml-[35%] md:w-[70%] lg:w-[65%] max-w-4xl py-10 xl:py-40 md:py-20 lg:py-30 px-5 md:px-10 lg:px-20"
+      class="site-content md:ml-[30%] lg:ml-[35%] md:w-[70%] lg:w-[65%] max-w-4xl py-10 xl:py-40 md:py-20 lg:py-30 px-5 md:px-10 lg:px-20"
     >
       <slot />
     </main>
@@ -127,9 +127,9 @@ const optimizedBg = await getImage({ src: bg, format: "avif", quality: "low" });
           class="inline"
         />
       </a>
-      <a href="/feed.xml" class="ml-4">
+      <!-- <a href="/blog/feed.xml" class="ml-4">
         <Icon title="RSS" name="fa7-solid:rss" size="2rem" class="inline" />
-      </a>
+      </a> -->
       <div class="mt-4">&copy; Carson Evans</div>
     </footer>
     <div id="background" data-src={optimizedBg.src}></div>
