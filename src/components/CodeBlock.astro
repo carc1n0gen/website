@@ -1,7 +1,9 @@
 ---
+import cx from "@/lib/cx";
+
 const { class: className, ...props } = Astro.props;
 ---
 
-<pre class={`my-4 p-4 rounded ${className}`} {...props}>
+<pre class={cx("my-4 p-4 rounded", className)} {...props}>
 <slot />
 </pre>

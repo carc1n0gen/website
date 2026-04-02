@@ -1,9 +1,15 @@
 ---
-const { isActive, ...props } = Astro.props;
+import cx from "@/lib/cx";
+
+const { isActive, class: className, ...props } = Astro.props;
 ---
 
 <a
-  class={`inline-block md:block lg:inline-block m-3 md:pr-2 lg:pr-0 md:border-r-3 md:border-r-transparent lg:border-r-0 hover:text-zinc-100 ${isActive ? "border-b-3 md:border-b-0 md:border-r-zinc-200 md:border-r-3 lg:border-r-0 lg:border-b-3" : ""}`}
+  class={cx(
+    "inline-block md:block mx-2 md:mx-0 my-4 md:pr-2 md:border-r-3 md:border-r-transparent hover:text-zinc-100",
+    isActive && "border-b-3 md:border-b-0 md:border-r-zinc-200 md:border-r-3",
+    className,
+  )}
   {...props}
 >
   <slot />

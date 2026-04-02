@@ -1,5 +1,7 @@
 ---
-const props = Astro.props;
+import cx from "@/lib/cx";
+
+const { class: className, ...props } = Astro.props;
 ---
 
-<code class="font-bold" {...props}><slot /></code>
+<code class={cx("font-bold", className)} {...props}><slot /></code>

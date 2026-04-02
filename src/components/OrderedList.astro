@@ -1,5 +1,9 @@
 ---
-const props = Astro.props;
+import cx from "@/lib/cx";
+
+const { class: className, ...props } = Astro.props;
 ---
 
-<ol class="list-decimal list-inside mx-2 my-4" {...props}><slot /></ol>
+<ol class={cx("list-decimal list-inside mx-2 my-4", className)} {...props}>
+  <slot />
+</ol>

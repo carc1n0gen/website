@@ -1,5 +1,7 @@
 ---
-const props = Astro.props;
+import cx from "@/lib/cx";
+
+const { class: className, ...props } = Astro.props;
 ---
 
-<p class="my-4" {...props}><slot /></p>
+<p class={cx("my-4", className)} {...props}><slot /></p>
