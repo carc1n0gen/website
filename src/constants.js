@@ -1,9 +1,10 @@
 export const SITE_URL =
   import.meta.env.PUBLIC_SITE_URL || "http://localhost:4321";
 
-export const SITE_TITLE = "I'm Carson";
+export const SITE_TITLE = "Hi, I'm Carson";
 
-export const SITE_SUBTITLE = "I do web stuff and things, and also photography";
+export const SITE_SUBTITLE =
+  "I'm a web developer and hobby photographer based in Canada.";
 
 export const GITHUB_URL = "https://github.com/carc1n0gen";
 

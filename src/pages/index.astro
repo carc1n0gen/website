@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import H2 from "@/components/H2.astro";
 import Button from "@/components/Button.astro";
 
 const recentPosts = (await getCollection("blog"))
@@ -10,20 +9,24 @@ const recentPosts = (await getCollection("blog"))
 ---
 
 <Layout title="Welcome">
-  <section class="mb-16">
-    <H2>Hi, I'm Carson</H2>
+  <section class="mb-8">
+    <h2 class="text-6xl font-bold mb-4">Hi, I'm Carson</h2>
     <p class="mb-4">
-      I'm a web developer and photographer based in Canada. I enjoy building
-      things for the web and capturing the world through a lens.
+      I'm a web developer and hobby photographer based in Canada. I enjoy
+      building things for the web and capturing the world through a lens.
     </p>
-    <div class="flex gap-4 flex-wrap">
-      <Button as="a" href="/galleries">My Galleries</Button>
-      <Button as="a" href="/blog">My Blog</Button>
+    <div class="flex gap-4">
+      <Button as="a" href="/photos" class="w-[50%] md:w-auto text-center">
+        My Photos
+      </Button>
+      <Button as="a" href="/blog" class="w-[50%] md:w-auto text-center">
+        My Blog
+      </Button>
     </div>
   </section>
 
-  <section class="mb-16">
-    <H2>Recent Photos</H2>
+  <section class="mb-8">
+    <h2 class="text-2xl font-bold mb-2">Recent Photos</h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
       {
         [1, 2, 3, 4, 5, 6].map((i) => (
@@ -37,12 +40,12 @@ const recentPosts = (await getCollection("blog"))
         ))
       }
     </div>
-    <Button as="a" href="/gallery">View all photos</Button>
+    <Button as="a" href="/photos">View all photos</Button>
   </section>
 
-  <section class="mb-16">
-    <H2>Recent Posts</H2>
-    <ul class="space-y-4">
+  <section>
+    <h2 class="text-2xl font-bold mb-2">Recent Posts</h2>
+    <ul class="space-y-4 mb-4">
       {
         recentPosts.map((post) => (
           <li>
@@ -64,7 +67,7 @@ const recentPosts = (await getCollection("blog"))
         ))
       }
     </ul>
-    <div class="mt-6">
+    <div>
       <Button as="a" href="/blog">More posts</Button>
     </div>
   </section>

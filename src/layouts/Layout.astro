@@ -46,7 +46,7 @@ const optimizedBg = await getImage({ src: bg, format: "avif", quality: "low" });
   </head>
   <body class="flex flex-col h-full">
     <header
-      class="site-header md:fixed w-full md:w-[30%] lg:w-[35%] md:h-full flex flex-col items-center lg:items-end p-4 md:py-20 md:px-6 lg:py-30 lg:px-10 xl:py-40 xl:px-20 text-center lg:text-right text-zinc-300"
+      class="site-header md:fixed w-full md:w-[30%] lg:w-[35%] md:h-full flex flex-col items-center lg:items-end p-4 md:py-20 md:px-6 lg:py-30 lg:px-10 xl:px-20 text-center lg:text-right text-zinc-300"
     >
       <a href="/">
         <Image
@@ -59,23 +59,25 @@ const optimizedBg = await getImage({ src: bg, format: "avif", quality: "low" });
           class="avatar rounded-full w-[150px]"
         />
       </a>
-      <h1 class="text-inherit text-2xl lg:text-5xl my-4 lg:mb-8">
+      <!-- <h1 class="text-inherit text-2xl lg:text-5xl mt-4 lg:mb-4">
         {SITE_TITLE}
       </h1>
-      <p class="lg:ml-12">{SITE_SUBTITLE}</p>
-      <nav class="mt-5 md:mt-10 py-5 text-right">
+      <p>{SITE_SUBTITLE}</p> -->
+      <nav class="mt-5 md:mt-10 md:mr-2 py-5 text-right md:text-2xl">
         <NavLink href="/" isActive={pathname === "/"}>Home</NavLink>
-        <NavLink href="/blog" isActive={pathname.startsWith("/blog")}
-          >Blog</NavLink
-        >
-        <NavLink href="/contact" isActive={pathname === "/contact"}
-          >Contact</NavLink
-        >
+        <NavLink href="/photos" isActive={pathname.startsWith("/photos")}>
+          Photos
+        </NavLink>
+        <NavLink href="/blog" isActive={pathname.startsWith("/blog")}>
+          Blog
+        </NavLink>
+        <NavLink href="/contact" isActive={pathname === "/contact"}>
+          Contact
+        </NavLink>
       </nav>
-      <footer class="hidden md:flex md:flex-col lg:flex-row mt-auto">
-        <span class="md:mb-4 lg:mb-0">&copy; Carson Evans</span>
+      <footer class="hidden md:flex md:flex-col mt-auto">
         <span>
-          <a href={GITHUB_URL} class="md:ml-0 lg:ml-4">
+          <a href={GITHUB_URL}>
             <Icon
               title="Github"
               name="fa7-brands:github"
@@ -100,11 +102,12 @@ const optimizedBg = await getImage({ src: bg, format: "avif", quality: "low" });
             />
           </a> -->
         </span>
+        <span class="mt-4">&copy; Carson Evans</span>
       </footer>
     </header>
     <main
       transition:animate="fade"
-      class="site-content md:ml-[30%] lg:ml-[35%] md:w-[70%] lg:w-[65%] max-w-4xl py-10 xl:py-40 md:py-20 lg:py-30 px-5 md:px-10 lg:px-20"
+      class="site-content md:ml-[30%] lg:ml-[35%] md:w-[70%] lg:w-[65%] max-w-4xl py-10 md:py-20 lg:py-30 px-5 md:px-10 lg:px-20"
     >
       <slot />
     </main>
@@ -138,7 +141,7 @@ const optimizedBg = await getImage({ src: bg, format: "avif", quality: "low" });
 <style define:vars={{ bgUri: `url(${optimizedBg.src})` }}>
   .site-header {
     background-position: 0;
-    background-attachment: scroll;
+    /* background-attachment: scroll; */
     background-image:
       linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), var(--bgUri);
     background-repeat: repeat, no-repeat;
@@ -147,7 +150,7 @@ const optimizedBg = await getImage({ src: bg, format: "avif", quality: "low" });
 
   .bottom-footer {
     background-position: 0;
-    background-attachment: scroll;
+    /* background-attachment: scroll; */
     background-image:
       linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), var(--bgUri);
     background-repeat: repeat, no-repeat;
